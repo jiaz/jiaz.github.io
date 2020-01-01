@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html><head>
+    <title>&#34;Thread-local&#34; Context in Node</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="generator" content="Hugo 0.62.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>&#34;Thread-local&#34; Context in Node &middot; Jiaji&#39;s Blog</title>
+    <meta name="description" content="" />
+
+    
+    <link type="text/css" rel="stylesheet" href="https://jiajizhou.com/githubpagetestcss/poole.css">
+    <link type="text/css" rel="stylesheet" href="https://jiajizhou.com/githubpagetestcss/syntax.css">
+    <link type="text/css" rel="stylesheet" href="https://jiajizhou.com/githubpagetestcss/lanyon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+    <base href="https://jiajizhou.com/githubpagetest">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://jiajizhou.com/githubpagetestapple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://jiajizhou.com/githubpagetestfavicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://jiajizhou.com/githubpagetestfavicon-16x16.png">
+    <link rel="manifest" href="https://jiajizhou.com/githubpagetestsite.webmanifest">
+    <link rel="canonical" href="https://jiajizhou.com/githubpagetest/2015/07/thread-local-context-in-node/">
+</head>
+<body>
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-item">
+        <p>Theme based on lanyon and powered by Hugo</p>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a class="sidebar-nav-item " href="https://jiajizhou.com/githubpagetest">Home</a>
+        <a class="sidebar-nav-item "
+            href="https://jiajizhou.com/githubpagetestpost">Posts</a>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </nav>
+
+    <div class="sidebar-item">
+        <p>&copy; 2018. All rights reserved.</p>
+    </div>
+</div>
+
+    <div class="wrap">
+        <div class="masthead">
+            <div class="container">
+                <h3 class="masthead-title">
+                    <a href="https://jiajizhou.com/githubpagetest" title="Home">Jiaji&#39;s Blog</a>
+                    <small></small>
+                </h3>
+            </div>
+        </div>
+
+        <div class="container content">
+<section id="main">
+    <h1 id="title">&#34;Thread-local&#34; Context in Node</h1>
+    <div>
+        <article id="content">
+            <p>Recently, I'm doing some experiments to try to rewrite our Nodejs service in a more maintainable style. I'd like to write several posts to share my findings.</p>
+<h2 id="pain-points">Pain Points</h2>
+<p>We use <code>express.js</code> as the framework to build our Nodejs service. The service was started at about 2011, when Nodejs was still in its infant state. At that time there was no common paradigm to construct a fairly complex web service in javascript. When I joined the team, I found the performance of our service was not as good as I expected. I then started to investigate how to improve it. During my work I found several big pain points when trying to make breaking changes to the code base. The top 4 of them are:</p>
+<ul>
+<li>The magic <code>req</code>, <code>res</code> and <code>context</code> object. They are everywhere and you have to pass them everywhere, but you don't know exactly how they are used without reading every line of the project.</li>
+<li>Error handling is like crossing a big maze. You have to pass the error object from it's origin through probably 5-10 stacks to reach the handling logic.</li>
+<li>Heavily rely on callbacks, callback of callbacks, or even deeper callbacks to control the program's execution flow, which not only creates a callback hell but also creates extreme tight coupling of function calls.</li>
+<li>Difficult to test. Because we rely on closures, i.e. anonymous functions, to do async callbacks, we have a <strong>lot</strong> of anonymous functions that are not testable.</li>
+</ul>
+<p>In Part 1, I'd like to talk about how to solve first pain point by using Nodejs&rsquo; <code>Domain</code> module.</p>
+<h2 id="hello-domain-goodbye-req">Hello <code>Domain</code>, goodbye <code>req</code></h2>
+<p>Because of Nodejs&rsquo; async nature, you cannot store your current request's context in some centralized place and then using accessor methods to access the current working context, like thread-local contexts commonly used in Java web frameworks. Instead, you have to specifically pass these context objects into all the methods you called, so that these context can be captured in closures and being accessible when callback function is called.</p>
+<p>If you keep writing code carefully, or you only have 1-2 contributors, it's probably not a big problem. However when the code is maintained by several guys, the code starts rotting. <code>req</code> will soon become a magic global garbage bin. You can &ldquo;easily&rdquo; put something into it in a function then accessing it from another to create a magic tight couple. You can &ldquo;easily&rdquo; access and modify the <code>req</code>'s parameters at anywhere as you wish. You can &ldquo;easily&rdquo; use <code>res.write</code> to send partial response in the middle of anywhere.</p>
+<p>In the end you will have a code base that no one really knows exactly how the context is used and what is in it.</p>
+<p>Kent Beck's <a href="https://theholyjava.wordpress.com/2011/02/14/clean-code-four-simple-design-rules/">four simple design rules for clean code</a>:</p>
+<ol>
+<li>Runs all the tests</li>
+<li>Contains no duplications</li>
+<li>Expresses the intent of the programmers</li>
+<li>Minimizes the number of classes and methods</li>
+</ol>
+<p>Passing the <code>req</code> around violates rule #2 and #3 and makes your code hard to understand.</p>
+<p>So how to solve the problem? By all means, we don't have thread local variables, which on the other hand is a good thing because we now have concurrency on a single thread.</p>
+<p>There are 2 solutions:</p>
+<ol>
+<li>Use <code>Domain</code></li>
+<li>Use <a href="https://github.com/othiym23/node-continuation-local-storage">continuation-local-storage</a> module</li>
+</ol>
+<p>If you are writing a library that might be included in other module then continuation-local-storage is recommended. If like me, you are implementing a web service, I would recommend you just use Domain. Domain is a native support in the Nodejs core while continuation-local-storage is a user land implementation. Another major difference is the error handling, which is out of the scope of this article.</p>
+<h2 id="domain-in-action"><code>Domain</code> in action</h2>
+<p>Domain was introduced in Nodejs v0.8, which mainly provides two things:</p>
+<ol>
+<li>A sandbox for exception handling and isolation for an async process chain</li>
+<li>An object that is bound to an async process chain</li>
+</ol>
+<p>We will cover #1 in a later post, now we focus on #2.</p>
+<p>When you run your code inside a domain, your code will have the access to the single domain object even in an async callback! It magically works for all Nodejs&rsquo; native async functions, such as <code>net</code>, <code>fs</code>, timers, etc.</p>
+<p>Let's see an example.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">domain</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;domain&#39;</span>);
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">d</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">domain</span>.<span style="color:#a6e22e">create</span>();
+
+<span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">run</span>(<span style="color:#66d9ef">function</span>() {
+    <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;hello&#39;</span>;
+
+    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+        <span style="color:#75715e">// process.domain returns the domain object
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// bound to the current async chain
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">domain</span>.<span style="color:#a6e22e">context</span>);
+    }, <span style="color:#ae81ff">1000</span>)
+});
+</code></pre></div><p>The above code will print out &ldquo;hello&rdquo; in the console. As you can see, the callback function doesn't require anything to access the current context even that it is in an async callback.</p>
+<h2 id="integrate-with-express">Integrate with <code>express</code></h2>
+<p>To integrate that into express framework, you can create a middleware to create a domain for each request and run the request handler in the domain thus provides you an &ldquo;async local variable&rdquo;.</p>
+<p>Here is a demo. In the demo, we use the context to keep track a requestId, an Id to uniquely identify a request, a common pattern used in web service implementation. Then the server did a simple async http get request.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">express</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">domain</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;domain&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>();
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">rid</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+
+<span style="color:#75715e">// Centralized context object
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Context</span>() {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">reqId</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">rid</span>;
+    <span style="color:#a6e22e">rid</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>;
+}
+<span style="color:#a6e22e">Context</span>.<span style="color:#a6e22e">getCurrent</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">domain</span>.<span style="color:#a6e22e">context</span>;
+}
+
+<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">use</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">next</span>) {
+    <span style="color:#75715e">// create a domain for every request
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">d</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">domain</span>.<span style="color:#a6e22e">create</span>();
+    <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Context</span>();
+    <span style="color:#75715e">// req and res are created before the d domain is created,
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// so we have to add them to the domain manually.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// newly created EventEmitter or other async constructs are
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// automatically added to the current domain.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">req</span>);
+    <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">res</span>);
+    <span style="color:#75715e">// run next in the created domain
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">run</span>(<span style="color:#66d9ef">function</span>() {
+        <span style="color:#a6e22e">next</span>();
+    })
+});
+
+<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/test&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) {
+    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;http://www.google.com&#34;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">resp</span>) {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">body</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+        <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;data&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">data</span>) {
+            <span style="color:#a6e22e">body</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">toString</span>();
+        });
+        <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;end&#39;</span>, <span style="color:#66d9ef">function</span>() {
+            <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>({
+                <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">substring</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">100</span>),
+                <span style="color:#a6e22e">reqId</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Context</span>.<span style="color:#a6e22e">getCurrent</span>().<span style="color:#a6e22e">reqId</span>
+            });
+        });
+    });
+});
+
+<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">3000</span>);
+</code></pre></div><p>When the server starts. You can run test to see that it works.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl http://localhost:3000/test
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;&lt;!doctype html&gt;&lt;html itemscope=\&#34;\&#34; itemtype=\&#34;http://schema.org/WebPage\&#34; lang=\&#34;en\&#34;&gt;&lt;head&gt;&lt;meta content&#34;</span>,
+  <span style="color:#e6db74">&#34;reqId&#34;</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#f92672">}</span>
+
+$ curl http://localhost:3000/test
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;&lt;!doctype html&gt;&lt;html itemscope=\&#34;\&#34; itemtype=\&#34;http://schema.org/WebPage\&#34; lang=\&#34;en\&#34;&gt;&lt;head&gt;&lt;meta content&#34;</span>,
+  <span style="color:#e6db74">&#34;reqId&#34;</span>: <span style="color:#ae81ff">2</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>With Domain, you can centralize your request states in an easily accessible context, which not only makes your code cleaner but also is extremely useful for writing functionalities such as transaction management.</p>
+        </article>
+    </div>
+</section>
+
+        </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label></body>
+
+</html>

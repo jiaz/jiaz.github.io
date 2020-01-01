@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html><head>
-    <title>Jiaji&#39;s Blog</title>
+    <title>gitignore Magic</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="generator" content="Hugo 0.62.0" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Jiaji&#39;s Blog</title>
+    <title>gitignore Magic &middot; Jiaji&#39;s Blog</title>
     <meta name="description" content="" />
 
     
@@ -20,7 +20,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://jiajizhou.com/githubpagetestfavicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://jiajizhou.com/githubpagetestfavicon-16x16.png">
     <link rel="manifest" href="https://jiajizhou.com/githubpagetestsite.webmanifest">
-    <link rel="canonical" href="https://jiajizhou.com/githubpagetest/">
+    <link rel="canonical" href="https://jiajizhou.com/githubpagetest/2015/04/gitignore-magic/">
 </head>
 <body>
 <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
@@ -32,7 +32,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="sidebar-nav-item  active " href="https://jiajizhou.com/githubpagetest">Home</a>
+        <a class="sidebar-nav-item " href="https://jiajizhou.com/githubpagetest">Home</a>
         <a class="sidebar-nav-item "
             href="https://jiajizhou.com/githubpagetestpost">Posts</a>
 
@@ -78,62 +78,31 @@
         </div>
 
         <div class="container content">
-
-
-
-
-<div class="posts">
-    
-    <div class="post">
-        <div class="post">
-    <header>
-        <h1 class="post-title"><a href="https://jiajizhou.com/githubpagetest/2015/04/gitignore-magic/">gitignore Magic</a></h1>
-        <span class="post-date">Apr 3, 2015 - about 400 Words</span>
-    </header>
-    <p>.gitignore file looks simple. However, if I ask you the question:</p>
+<section id="main">
+    <h1 id="title">gitignore Magic</h1>
+    <div>
+        <article id="content">
+            <p>.gitignore file looks simple. However, if I ask you the question:</p>
 <blockquote>
 <p>What’s the difference between <code>log/*</code> and <code>log/</code>?</p>
 </blockquote>
 <p>I bet most people cannot tell correctly.</p>
 <p>I came across this question when I did a .gitignore file clean-up in my project. It took me a while to understand the difference and I find it super easy to be forgotten. After looking up the manual and doing experiments several times, I decide to write this post. Hope it can help those who think about this question as well.</p>
-    <footer>
-        <a href="https://jiajizhou.com/githubpagetest/2015/04/gitignore-magic/">
-            <nobr>Read more →</nobr>
-        </a>
-    </footer>
-</div>
-
+<p>You can find the documentation of .gitignore file <a href="http://git-scm.com/docs/gitignore">here</a>.</p>
+<p>Most rules are quite clear, however it does not include enough examples, especially for patterns involving <code>/</code>, the rules of which are not intuitive.</p>
+<p>Let me rephrase them here. There are 3 basic rules for the patterns involving <code>/</code>:</p>
+<ol>
+<li>If the pattern ends with <code>/</code>, the trailing slash is first removed then continue to process next rules. The matching result will be restricted to directory only.</li>
+<li>If there is <strong>no <code>/</code> in the pattern</strong>, it uses the pattern to match <strong>all file or directory names regardless of the depth</strong>. For example, <code>log</code> matches <code>log</code>, <code>log/</code> and <code>abc/log</code>. Another example with trailing slash, <code>log/</code> matches <code>log/</code>, <code>abc/log/</code> or <code>abc/efg/log/</code>.</li>
+<li>If the <strong>pattern contains <code>/</code></strong>, it uses the pattern to match the <strong>full path relative to the .gitignore file</strong>. That is, the full path will be considered rather than part of the filename. For example, <code>shared/log</code> will match <code>shared/log</code> or <code>shared/log/</code>, but not <code>abc/shared/log</code></li>
+</ol>
+<p>So based on these rules, there is a subtle difference between <code>log/</code> and <code>log/*</code>.</p>
+<p>For <code>log/</code>, it will be processed according to Rule 1 and 2, which means it matches any directory named <code>log</code>. For example, it matches <code>log/</code>, <code>abc/log/</code> or <code>abc/efg/log/</code>, no matter how deep the directory is.</p>
+<p>However for <code>log/*</code>, it will be processed according to Rule 3, which means it matches only files or directories under root <code>log/</code> directory. Here ‘root’ is the current .gitignore file path. For example, it matches <code>log/abc</code> or <code>log/efg/</code>, but not <code>abc/log</code> or <code>abc/log/</code>.</p>
+<p>See, the handling of trailing slash is a little bit counterintuitive.</p>
+        </article>
     </div>
-    
-    <div class="post">
-        <div class="post">
-    <header>
-        <h1 class="post-title"><a href="https://jiajizhou.com/githubpagetest/2015/02/why-my-node-program-wont-exit/">Why my node program won&#39;t exit?!</a></h1>
-        <span class="post-date">Feb 23, 2015 - about 600 Words</span>
-    </header>
-    <p>上周碰到一个很有意思的问题，同事找我来跑一个node的程序，结果跑完了最后一个step，但是程序没有退出。</p>
-<p>这对刚从同步编程世界转过来的同学来说简直是不可思议的事情。刚开始我也以为是程序的bug，如果不是bug的话有可能是在等待某个callback，但一直没有触发，同事也不明白是为什么，正好我刚入职就让我investigate一下。之前虽然写过一些node的程序，但是都是小打小弄，所以刚开始没什么头绪。</p>
-    <footer>
-        <a href="https://jiajizhou.com/githubpagetest/2015/02/why-my-node-program-wont-exit/">
-            <nobr>Read more →</nobr>
-        </a>
-    </footer>
-</div>
-
-    </div>
-    
-</div>
-
-<div class="pagination">
-    
-    <span class="pagination-item older">Older</span>
-    
-
-    
-    <a class="pagination-item newer" href="/githubpagetest/">Newer</a>
-    
-</div>
-
+</section>
 
         </div>
     </div>

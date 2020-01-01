@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jiaji&#39;s Blog</title>
+    <link>https://jiajizhou.com/githubpagetest/</link>
+    <description>Recent content on Jiaji&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 05 Feb 2018 12:00:00 -0800</lastBuildDate>
+    
+	<atom:link href="https://jiajizhou.com/githubpagetest/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Chaos Game</title>
+      <link>https://jiajizhou.com/githubpagetest/2018/02/chaos-game/</link>
+      <pubDate>Mon, 05 Feb 2018 12:00:00 -0800</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2018/02/chaos-game/</guid>
+      <description>&lt;p&gt;最近在看 Interactive Computer Graphics: A Top-Down Approach with WebGL ，里面看到一个很有意思的几何问题，分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>&#34;Thread-local&#34; Context in Node</title>
+      <link>https://jiajizhou.com/githubpagetest/2015/07/thread-local-context-in-node/</link>
+      <pubDate>Fri, 03 Jul 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2015/07/thread-local-context-in-node/</guid>
+      <description>&lt;p&gt;Recently, I&#39;m doing some experiments to try to rewrite our Nodejs service in a more maintainable style. I&#39;d like to write several posts to share my findings.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>A Simple HTTP Load Testing Client in Go</title>
+      <link>https://jiajizhou.com/githubpagetest/2015/05/a-simple-http-load-testing-client-in-go/</link>
+      <pubDate>Sun, 17 May 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2015/05/a-simple-http-load-testing-client-in-go/</guid>
+      <description>&lt;p&gt;Last week we try to reproduce an incident in our production system which is caused by an eleviation of HTTPS connection creation rate. The service was flooded by more than 2000 concurrent connections per server at peak.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Unit Test without Breaking Encapsulation in Node</title>
+      <link>https://jiajizhou.com/githubpagetest/2015/05/unit-test-without-breaking-encapsulation-in-node/</link>
+      <pubDate>Fri, 01 May 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2015/05/unit-test-without-breaking-encapsulation-in-node/</guid>
+      <description>&lt;p&gt;When writing unit tests, the most ugly &amp;amp; painful &amp;amp; stupid thing you might have to do is to expose some internal implementation of your module to the testing code so that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is easier to enumerate all possible conditional branches to cover some edge cases; (although if you have a complex design, you can always achieve this by mocking things, however sometimes it&#39;s an overkill)&lt;/li&gt;
+&lt;li&gt;It is possible to inspect side effects of your code; (accept the dark side of the reality, you cannot totally avoid side effects)&lt;/li&gt;
+&lt;li&gt;It is easier to replace some dependencies with mocks. (although if you have a good design, you should be able to inject all dependencies, but it&#39;s not a common thing in javascript realm)&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Node Profiling Tools</title>
+      <link>https://jiajizhou.com/githubpagetest/2015/04/node-profiling-tools/</link>
+      <pubDate>Wed, 15 Apr 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2015/04/node-profiling-tools/</guid>
+      <description>&lt;p&gt;At Hulu, we use Nodejs to build a &lt;strong&gt;proxy&lt;/strong&gt; or &lt;strong&gt;orchestration&lt;/strong&gt; service to expose APIs to our client applications in order to provide a unified interface (in API schema) which hides the complexity to deal with our versatile backend &amp;ldquo;micro-services&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;The reason we choose Nodejs over other technologies is that its &lt;strong&gt;asynchronized&lt;/strong&gt; nature perfectly fits the requirements of the service:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Handling large number of concurrent clients;&lt;/li&gt;
+&lt;li&gt;Requesting backend micro-services to get the data, where most of the time is spend on IO;&lt;/li&gt;
+&lt;li&gt;Enhancing the backend response with data from other backend micro-services.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is a typical front-tier API service that has &lt;strong&gt;low CPU&lt;/strong&gt; consumption and &lt;strong&gt;high concurrent IO&lt;/strong&gt; requirement.&lt;/p&gt;
+&lt;p&gt;However when you deploy the application to production, it is very likely that you would hit CPU bottleneck if you are not careful enough when writing code. Javascript is so flexible that can easily get you trapped into performance problem if you don&#39;t understand the execution engine (v8) well enough. Recently, I spent a lot of time doing profiling and investigating the performance issues of our service.&lt;/p&gt;
+&lt;p&gt;In this post, I&#39;ll list some tools and techniques I have used to profile/debug Nodejs program for daily development and production trouble-shooting as a summary of the work I&#39;ve done.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gitignore Magic</title>
+      <link>https://jiajizhou.com/githubpagetest/2015/04/gitignore-magic/</link>
+      <pubDate>Fri, 03 Apr 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2015/04/gitignore-magic/</guid>
+      <description>&lt;p&gt;.gitignore file looks simple. However, if I ask you the question:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;What’s the difference between &lt;code&gt;log/*&lt;/code&gt; and &lt;code&gt;log/&lt;/code&gt;?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I bet most people cannot tell correctly.&lt;/p&gt;
+&lt;p&gt;I came across this question when I did a .gitignore file clean-up in my project. It took me a while to understand the difference and I find it super easy to be forgotten. After looking up the manual and doing experiments several times, I decide to write this post. Hope it can help those who think about this question as well.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Why my node program won&#39;t exit?!</title>
+      <link>https://jiajizhou.com/githubpagetest/2015/02/why-my-node-program-wont-exit/</link>
+      <pubDate>Mon, 23 Feb 2015 12:00:00 -0800</pubDate>
+      
+      <guid>https://jiajizhou.com/githubpagetest/2015/02/why-my-node-program-wont-exit/</guid>
+      <description>&lt;p&gt;上周碰到一个很有意思的问题，同事找我来跑一个node的程序，结果跑完了最后一个step，但是程序没有退出。&lt;/p&gt;
+&lt;p&gt;这对刚从同步编程世界转过来的同学来说简直是不可思议的事情。刚开始我也以为是程序的bug，如果不是bug的话有可能是在等待某个callback，但一直没有触发，同事也不明白是为什么，正好我刚入职就让我investigate一下。之前虽然写过一些node的程序，但是都是小打小弄，所以刚开始没什么头绪。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
