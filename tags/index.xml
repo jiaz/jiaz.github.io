@@ -6,9 +6,64 @@
     <description>Recent content in Tags on Jiaji&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Mon, 05 Feb 2018 12:00:00 -0800</lastBuildDate>
     
 	<atom:link href="https://jiajizhou.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>algorithm</title>
+      <link>https://jiajizhou.com/tags/algorithm/</link>
+      <pubDate>Mon, 05 Feb 2018 12:00:00 -0800</pubDate>
+      
+      <guid>https://jiajizhou.com/tags/algorithm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>async</title>
+      <link>https://jiajizhou.com/tags/async/</link>
+      <pubDate>Fri, 03 Jul 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/tags/async/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nodejs</title>
+      <link>https://jiajizhou.com/tags/nodejs/</link>
+      <pubDate>Fri, 03 Jul 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/tags/nodejs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://jiajizhou.com/tags/go/</link>
+      <pubDate>Sun, 17 May 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
+      <link>https://jiajizhou.com/tags/testing/</link>
+      <pubDate>Sun, 17 May 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/tags/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>https://jiajizhou.com/tags/git/</link>
+      <pubDate>Fri, 03 Apr 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/tags/git/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>testing on Jiaji&#39;s Blog</title>
+    <link>https://jiajizhou.com/tags/testing/</link>
+    <description>Recent content in testing on Jiaji&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 May 2015 12:00:00 -0700</lastBuildDate>
+    
+	<atom:link href="https://jiajizhou.com/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A Simple HTTP Load Testing Client in Go</title>
+      <link>https://jiajizhou.com/2015/05/a-simple-http-load-testing-client-in-go/</link>
+      <pubDate>Sun, 17 May 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/2015/05/a-simple-http-load-testing-client-in-go/</guid>
+      <description>&lt;p&gt;Last week we try to reproduce an incident in our production system which is caused by an eleviation of HTTPS connection creation rate. The service was flooded by more than 2000 concurrent connections per server at peak.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Unit Test without Breaking Encapsulation in Node</title>
+      <link>https://jiajizhou.com/2015/05/unit-test-without-breaking-encapsulation-in-node/</link>
+      <pubDate>Fri, 01 May 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/2015/05/unit-test-without-breaking-encapsulation-in-node/</guid>
+      <description>&lt;p&gt;When writing unit tests, the most ugly &amp;amp; painful &amp;amp; stupid thing you might have to do is to expose some internal implementation of your module to the testing code so that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is easier to enumerate all possible conditional branches to cover some edge cases; (although if you have a complex design, you can always achieve this by mocking things, however sometimes it&#39;s an overkill)&lt;/li&gt;
+&lt;li&gt;It is possible to inspect side effects of your code; (accept the dark side of the reality, you cannot totally avoid side effects)&lt;/li&gt;
+&lt;li&gt;It is easier to replace some dependencies with mocks. (although if you have a good design, you should be able to inject all dependencies, but it&#39;s not a common thing in javascript realm)&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>async on Jiaji&#39;s Blog</title>
+    <link>https://jiajizhou.com/tags/async/</link>
+    <description>Recent content in async on Jiaji&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 03 Jul 2015 12:00:00 -0700</lastBuildDate>
+    
+	<atom:link href="https://jiajizhou.com/tags/async/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>&#34;Thread-local&#34; Context in Node</title>
+      <link>https://jiajizhou.com/2015/07/thread-local-context-in-node/</link>
+      <pubDate>Fri, 03 Jul 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/2015/07/thread-local-context-in-node/</guid>
+      <description>&lt;p&gt;Recently, I&#39;m doing some experiments to try to rewrite our Nodejs service in a more maintainable style. I&#39;d like to write several posts to share my findings.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

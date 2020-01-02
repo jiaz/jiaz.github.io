@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on Jiaji&#39;s Blog</title>
+    <link>https://jiajizhou.com/tags/git/</link>
+    <description>Recent content in git on Jiaji&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 03 Apr 2015 12:00:00 -0700</lastBuildDate>
+    
+	<atom:link href="https://jiajizhou.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gitignore Magic</title>
+      <link>https://jiajizhou.com/2015/04/gitignore-magic/</link>
+      <pubDate>Fri, 03 Apr 2015 12:00:00 -0700</pubDate>
+      
+      <guid>https://jiajizhou.com/2015/04/gitignore-magic/</guid>
+      <description>&lt;p&gt;.gitignore file looks simple. However, if I ask you the question:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;What’s the difference between &lt;code&gt;log/*&lt;/code&gt; and &lt;code&gt;log/&lt;/code&gt;?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I bet most people cannot tell correctly.&lt;/p&gt;
+&lt;p&gt;I came across this question when I did a .gitignore file clean-up in my project. It took me a while to understand the difference and I find it super easy to be forgotten. After looking up the manual and doing experiments several times, I decide to write this post. Hope it can help those who think about this question as well.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
