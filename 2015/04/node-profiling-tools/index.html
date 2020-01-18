@@ -1,93 +1,59 @@
 <!DOCTYPE html>
-<html><head>
-    <title>Node Profiling Tools</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="generator" content="Hugo 0.62.0" />
+<html><meta charset="utf-8" />
+<title></title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Node Profiling Tools &middot; Jiaji&#39;s Blog</title>
-    <meta name="description" content="" />
+<title>Node Profiling Tools &middot; Jiaji&#39;s Blog</title>
+<meta name="description" content="" />
 
-    
-    <link type="text/css" rel="stylesheet" href="https://jiajizhou.com/css/poole.css">
-    <link type="text/css" rel="stylesheet" href="https://jiajizhou.com/css/syntax.css">
-    <link type="text/css" rel="stylesheet" href="https://jiajizhou.com/css/lanyon.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
 
-    <base href="https://jiajizhou.com/">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://jiajizhou.com/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://jiajizhou.com/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://jiajizhou.com/favicon-16x16.png">
-    <link rel="manifest" href="https://jiajizhou.com/site.webmanifest">
-    <link rel="canonical" href="https://jiajizhou.com/2015/04/node-profiling-tools/">
+<link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400i,700,700i&display=swap&subset=greek,greek-ext,latin-ext"
+    rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700|IBM+Plex+Serif:400,400i,700&display=swap&subset=cyrillic,cyrillic-ext,greek,latin-ext"
+    rel="stylesheet">
+
+
+<link rel="stylesheet" href="https://jiajizhou.com/css/styles.min.24bdad10ad73cd5bba4589026a9a876f27c8af7cc5e4b9e9d0455aec99f8168d.css" integrity="sha256-JL2tEK1zzVu6RYkCapqHbyfIr3zF5Lnp0EVa7Jn4Fo0=">
+
+
+<link type="text/css" rel="stylesheet" href="https://jiajizhou.com/css/syntax.css">
+<link type="text/css" rel="stylesheet" href="https://jiajizhou.com/css/all.min.css">
+
+<base href="https://jiajizhou.com/">
+<link rel="apple-touch-icon" sizes="180x180" href="https://jiajizhou.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://jiajizhou.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://jiajizhou.com/favicon-16x16.png">
+<link rel="manifest" href="https://jiajizhou.com/site.webmanifest">
+<link rel="canonical" href="https://jiajizhou.com/2015/04/node-profiling-tools/">
 </head>
 <body>
-    
-    <div class="wrap">
-        <div class="masthead">
-            <div class="container">
-                <header class="clearfix">
+    <div class="container mx-auto pl-8 pr-8 lg:flex">
 
-                    <h3 class="masthead-title">
-                        <a href="https://jiajizhou.com/" title="Home">Jiaji&#39;s Blog</a>
-                        <small></small>
-                    </h3>
+        <div class="border-b lg:border-0 lg:flex-none lg:w-56">
+            <h1>
+                <a href="https://jiajizhou.com/" title="Home">Jiaji&#39;s Blog</a>
+                <small></small>
+            </h1>
 
-                    <nav>
-                        <a class="" href="https://jiajizhou.com/">Home</a>
-                        <a class=""
-                            href="https://jiajizhou.com/posts">Posts</a>
+            <nav class="pb-4 lg:border-0 lg:flex-1 lg:flex lg:flex-col">
+                <a class="" href="https://jiajizhou.com/">Home</a>
+                <a class=""
+                    href="https://jiajizhou.com/posts">Posts</a>
+                <a class="" href="https://jiajizhou.com/about/">About</a>
+                </nav>
 
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a class="" href="https://jiajizhou.com/about/">About</a>
-                        
-                        
-                        
-                        
-                        
-                        
-                    </nav>
-                </header>
+            <div class="hidden lg:block">
+                <a href="https://github.com/jiaz"><i class="fab fa-lg fa-github"></i></a>
             </div>
         </div>
 
-        <div class="container content">
+        <div class="lg:flex-1 mb-8">
 <section id="main">
     <h1 id="title">Node Profiling Tools</h1>
-    <div>
+    <div class="mb-8">
         <article id="content">
             <p>At Hulu, we use Nodejs to build a <strong>proxy</strong> or <strong>orchestration</strong> service to expose APIs to our client applications in order to provide a unified interface (in API schema) which hides the complexity to deal with our versatile backend &ldquo;micro-services&rdquo;.</p>
 <p>The reason we choose Nodejs over other technologies is that its <strong>asynchronized</strong> nature perfectly fits the requirements of the service:</p>
@@ -105,12 +71,12 @@
 <p><a href="https://github.com/node-inspector/node-inspector">node-inspector</a> is my favorite tool for Nodejs application trouble-shooting.</p>
 <p>You can use <code>node-debug</code> command to launch your application so that it starts your application and the debugger in your browser. However my favorite way to launch the debugger is to have a separate debugger process and attach node applications to it on demand so that I can use a single debugger process to debug multiple node applications.</p>
 <p>First launch node-inspector, I prefer to open a separate console and leave it there.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ node-inspector
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ node-inspector
 Node Inspector v0.9.2
-Visit http://127.0.0.1:8080/debug?port<span style="color:#f92672">=</span><span style="color:#ae81ff">5858</span> to start debugging.
+Visit http://127.0.0.1:8080/debug?port<span class="o">=</span><span class="m">5858</span> to start debugging.
 </code></pre></div><p>Then add <code>--debug</code> flag to the node option to run the node application with debugger enabled, which by default listen on port 5858. You can change the port by providing a port number to the debug flag, as <code>--debug=&lt;port&gt;</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ node --debug lib/mozart_server.js
-debugger listening on port <span style="color:#ae81ff">5858</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ node --debug lib/mozart_server.js
+debugger listening on port <span class="m">5858</span>
 </code></pre></div><p>If you try to debug some issue when node app starts, you can change <code>--debug</code> to <code>--debug-brk</code> so that your app starts in paused status.</p>
 <p>After your app is started, you can visit the URL <code>http://127.0.0.1:8080/debug?port=&lt;port&gt;</code> to debug your application, just like in any IDE.</p>
 <p><img src="./images/nodejs-profiling/node-inspector-1.png" alt="node-inspector debugger"></p>
@@ -123,9 +89,9 @@ debugger listening on port <span style="color:#ae81ff">5858</span>
 <h3 id="tracegl">TraceGL</h3>
 <p><a href="https://github.com/traceglMPL/tracegl">TraceGL</a> is a tracing tool to log every statement your Nodejs app is executing. It is used when I want to know what exactly happens during the execution, especially when debugging timers, which is really difficult to manage using regular debuggers, because attaching the debugger will stop the execution and thus changing timers&rsquo; behavior.</p>
 <p>TraceGL is very easy to setup, just clone the repository and follow instructions to build the <code>tracegl.js</code> lib, put it somewhere makes you comfortable to access, like <code>~/Workspace/tools/tracegl.js</code>. Then start your node application using the following command.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ node ~/Workspace/tools/tracegl lib/mozart_server.js
-<span style="color:#f92672">[</span>trace.GL<span style="color:#f92672">]</span> See your code.
-<span style="color:#f92672">[</span>trace.GL<span style="color:#f92672">]</span> WebGL trace UI: http://0.0.0.0:2000
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ node ~/Workspace/tools/tracegl lib/mozart_server.js
+<span class="o">[</span>trace.GL<span class="o">]</span> See your code.
+<span class="o">[</span>trace.GL<span class="o">]</span> WebGL trace UI: http://0.0.0.0:2000
 </code></pre></div><p>Then open <code>http://localhost:2000</code> in your browser, you will see something like the below image. TraceGL outputs each executed statement in time order and the value of function arguments with the corresponding stack, which is really useful.</p>
 <p><img src="./images/nodejs-profiling/tracegl.png" alt="TraceGL"></p>
 <h2 id="cpu-profiling">CPU Profiling</h2>
@@ -146,25 +112,25 @@ debugger listening on port <span style="color:#ae81ff">5858</span>
 <h3 id="v8-profile-log">v8 Profile log</h3>
 <p>Sometimes you need to do more subtle inspection, such as finding if the method is optimized or not by v8, knowing what Nodejs is doing in native space. Then you need the v8 profile log.</p>
 <p>To generate the v8 profile log is easy. Just add <code>--prof</code> to the node command line parameter.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ node --prof lib/mozart_server.js
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ node --prof lib/mozart_server.js
 </code></pre></div><p>Then Nodejs will generate a file <code>v8.log</code> in the current folder.</p>
 <p>The difficult part is how to analyze the log file. According the tutorial, you need to find a proper <code>mac-tick-processor</code> to parse the log file. Unfortunately, I have never successfully built one, because the v8 version embedded in node v0.10 is too old and it just can't be built it in the latest OSX environment without changing the source code. That's painful.</p>
 <p>After some research, I found a particular useful tool called <a href="https://github.com/sidorares/node-tick">node-tick</a> that can do the trick. node-tick is a pure javascript application that doesn't require you to build. Below is an excerpt from the output of node-tick, which shows a suspicious unknown lib that consumes 15% of the CPU time.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>Unknown<span style="color:#f92672">]</span>:
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unknown<span class="o">]</span>:
    ticks  total  nonlib   name
-   <span style="color:#ae81ff">5790</span>   14.9%
+   <span class="m">5790</span>   14.9%
  
- <span style="color:#f92672">[</span>Shared libraries<span style="color:#f92672">]</span>:
+ <span class="o">[</span>Shared libraries<span class="o">]</span>:
    ticks  total  nonlib   name
-  <span style="color:#ae81ff">25474</span>   65.7%    0.0%  /Users/jiaji.zhou/.nvm/v0.10.24/bin/node
-   <span style="color:#ae81ff">2634</span>    6.8%    0.0%  /usr/lib/system/libsystem_kernel.dylib
-   <span style="color:#ae81ff">1400</span>    3.6%    0.0%  /usr/lib/system/libsystem_platform.dylib
-    <span style="color:#ae81ff">716</span>    1.8%    0.0%  /usr/lib/system/libsystem_c.dylib
-    <span style="color:#ae81ff">537</span>    1.4%    0.0%  /usr/lib/system/libsystem_malloc.dylib
-    <span style="color:#ae81ff">232</span>    0.6%    0.0%  /usr/lib/system/libsystem_pthread.dylib
-     <span style="color:#ae81ff">33</span>    0.1%    0.0%  /usr/lib/libc++abi.dylib
-     <span style="color:#ae81ff">13</span>    0.0%    0.0%  /usr/lib/system/libsystem_m.dylib
-     <span style="color:#ae81ff">10</span>    0.0%    0.0%  /usr/lib/libstdc++.6.dylib
+  <span class="m">25474</span>   65.7%    0.0%  /Users/jiaji.zhou/.nvm/v0.10.24/bin/node
+   <span class="m">2634</span>    6.8%    0.0%  /usr/lib/system/libsystem_kernel.dylib
+   <span class="m">1400</span>    3.6%    0.0%  /usr/lib/system/libsystem_platform.dylib
+    <span class="m">716</span>    1.8%    0.0%  /usr/lib/system/libsystem_c.dylib
+    <span class="m">537</span>    1.4%    0.0%  /usr/lib/system/libsystem_malloc.dylib
+    <span class="m">232</span>    0.6%    0.0%  /usr/lib/system/libsystem_pthread.dylib
+     <span class="m">33</span>    0.1%    0.0%  /usr/lib/libc++abi.dylib
+     <span class="m">13</span>    0.0%    0.0%  /usr/lib/system/libsystem_m.dylib
+     <span class="m">10</span>    0.0%    0.0%  /usr/lib/libstdc++.6.dylib
 </code></pre></div><p>I'm not going to go into the details of how to understand the v8 log. Here are some references if you are interested:</p>
 <ul>
 <li><a href="https://github.com/thlorenz/v8-perf/blob/master/performance-profiling.md">https://github.com/thlorenz/v8-perf/blob/master/performance-profiling.md</a></li>
@@ -181,32 +147,32 @@ debugger listening on port <span style="color:#ae81ff">5858</span>
 <p>A particular optimization we do on production is to enable <code>--expose-gc</code> and <code>--nouse-idle-notification</code> flag so that we can do manual GC when necessary. Here is a good reference about the effect of <code>--expose-gc</code> and <code>--nouse-idle-notification</code> to the system performance under high load: <a href="http://sysmagazine.com/posts/123154/">http://sysmagazine.com/posts/123154/</a>.</p>
 <p>On the other hand, GC activity log is a good resource for performance trouble shooting. It is better to record that. To enable GC log, you need to add the <code>--trace_gc</code> flag to the node command. See the below example. One thing to note: the number in the parenthesis is the total memory allocated, the number outside the parenthesis is the total used memory.</p>
 <p>When system performance is low, you may check the log to see if there are excessive GC events at the same time. If so, you may need to investigate how to reduce memory usage.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ node --debug --trace_gc --expose-gc lib/mozart_server.js
-debugger listening on port <span style="color:#ae81ff">5858</span>
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>       <span style="color:#ae81ff">30</span> ms: Scavenge 2.0 <span style="color:#f92672">(</span>34.0<span style="color:#f92672">)</span> -&gt; 1.7 <span style="color:#f92672">(</span>36.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">0</span> ms <span style="color:#f92672">[</span>Runtime::PerformGC<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>       <span style="color:#ae81ff">42</span> ms: Scavenge 2.6 <span style="color:#f92672">(</span>38.0<span style="color:#f92672">)</span> -&gt; 2.1 <span style="color:#f92672">(</span>38.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">1</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>       <span style="color:#ae81ff">51</span> ms: Scavenge 3.1 <span style="color:#f92672">(</span>38.0<span style="color:#f92672">)</span> -&gt; 2.5 <span style="color:#f92672">(</span>38.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">0</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>       <span style="color:#ae81ff">67</span> ms: Scavenge 4.6 <span style="color:#f92672">(</span>38.0<span style="color:#f92672">)</span> -&gt; 3.3 <span style="color:#f92672">(</span>38.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">0</span> ms <span style="color:#f92672">[</span>Runtime::PerformGC<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>       <span style="color:#ae81ff">90</span> ms: Scavenge 5.5 <span style="color:#f92672">(</span>39.0<span style="color:#f92672">)</span> -&gt; 4.5 <span style="color:#f92672">(</span>39.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">1</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">111</span> ms: Scavenge 6.4 <span style="color:#f92672">(</span>39.0<span style="color:#f92672">)</span> -&gt; 5.4 <span style="color:#f92672">(</span>40.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">1</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">155</span> ms: Mark-sweep 9.4 <span style="color:#f92672">(</span>41.0<span style="color:#f92672">)</span> -&gt; 5.6 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">8</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>promotion limit reached<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">192</span> ms: Scavenge 10.2 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> -&gt; 7.4 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">1</span> ms <span style="color:#f92672">[</span>Runtime::PerformGC<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">222</span> ms: Scavenge 10.8 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> -&gt; 8.7 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">2</span> ms <span style="color:#f92672">[</span>Runtime::PerformGC<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">239</span> ms: Scavenge 12.6 <span style="color:#f92672">(</span>44.0<span style="color:#f92672">)</span> -&gt; 10.9 <span style="color:#f92672">(</span>46.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">1</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">287</span> ms: Scavenge 18.1 <span style="color:#f92672">(</span>46.0<span style="color:#f92672">)</span> -&gt; 13.2 <span style="color:#f92672">(</span>47.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">2</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>94062<span style="color:#f92672">]</span>      <span style="color:#ae81ff">341</span> ms: Mark-sweep 19.7 <span style="color:#f92672">(</span>47.0<span style="color:#f92672">)</span> -&gt; 12.3 <span style="color:#f92672">(</span>48.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">17</span> ms <span style="color:#f92672">[</span>allocation failure<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>promotion limit reached<span style="color:#f92672">]</span>.
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ node --debug --trace_gc --expose-gc lib/mozart_server.js
+debugger listening on port <span class="m">5858</span>
+<span class="o">[</span>94062<span class="o">]</span>       <span class="m">30</span> ms: Scavenge 2.0 <span class="o">(</span>34.0<span class="o">)</span> -&gt; 1.7 <span class="o">(</span>36.0<span class="o">)</span> MB, <span class="m">0</span> ms <span class="o">[</span>Runtime::PerformGC<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>       <span class="m">42</span> ms: Scavenge 2.6 <span class="o">(</span>38.0<span class="o">)</span> -&gt; 2.1 <span class="o">(</span>38.0<span class="o">)</span> MB, <span class="m">1</span> ms <span class="o">[</span>allocation failure<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>       <span class="m">51</span> ms: Scavenge 3.1 <span class="o">(</span>38.0<span class="o">)</span> -&gt; 2.5 <span class="o">(</span>38.0<span class="o">)</span> MB, <span class="m">0</span> ms <span class="o">[</span>allocation failure<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>       <span class="m">67</span> ms: Scavenge 4.6 <span class="o">(</span>38.0<span class="o">)</span> -&gt; 3.3 <span class="o">(</span>38.0<span class="o">)</span> MB, <span class="m">0</span> ms <span class="o">[</span>Runtime::PerformGC<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>       <span class="m">90</span> ms: Scavenge 5.5 <span class="o">(</span>39.0<span class="o">)</span> -&gt; 4.5 <span class="o">(</span>39.0<span class="o">)</span> MB, <span class="m">1</span> ms <span class="o">[</span>allocation failure<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">111</span> ms: Scavenge 6.4 <span class="o">(</span>39.0<span class="o">)</span> -&gt; 5.4 <span class="o">(</span>40.0<span class="o">)</span> MB, <span class="m">1</span> ms <span class="o">[</span>allocation failure<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">155</span> ms: Mark-sweep 9.4 <span class="o">(</span>41.0<span class="o">)</span> -&gt; 5.6 <span class="o">(</span>43.0<span class="o">)</span> MB, <span class="m">8</span> ms <span class="o">[</span>allocation failure<span class="o">]</span> <span class="o">[</span>promotion limit reached<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">192</span> ms: Scavenge 10.2 <span class="o">(</span>43.0<span class="o">)</span> -&gt; 7.4 <span class="o">(</span>43.0<span class="o">)</span> MB, <span class="m">1</span> ms <span class="o">[</span>Runtime::PerformGC<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">222</span> ms: Scavenge 10.8 <span class="o">(</span>43.0<span class="o">)</span> -&gt; 8.7 <span class="o">(</span>43.0<span class="o">)</span> MB, <span class="m">2</span> ms <span class="o">[</span>Runtime::PerformGC<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">239</span> ms: Scavenge 12.6 <span class="o">(</span>44.0<span class="o">)</span> -&gt; 10.9 <span class="o">(</span>46.0<span class="o">)</span> MB, <span class="m">1</span> ms <span class="o">[</span>allocation failure<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">287</span> ms: Scavenge 18.1 <span class="o">(</span>46.0<span class="o">)</span> -&gt; 13.2 <span class="o">(</span>47.0<span class="o">)</span> MB, <span class="m">2</span> ms <span class="o">[</span>allocation failure<span class="o">]</span>.
+<span class="o">[</span>94062<span class="o">]</span>      <span class="m">341</span> ms: Mark-sweep 19.7 <span class="o">(</span>47.0<span class="o">)</span> -&gt; 12.3 <span class="o">(</span>48.0<span class="o">)</span> MB, <span class="m">17</span> ms <span class="o">[</span>allocation failure<span class="o">]</span> <span class="o">[</span>promotion limit reached<span class="o">]</span>.
 </code></pre></div><p>To understand the GC space layout, you may add <code>--trace_gc_verbose</code> to show details for the size of each generation. This is useful when the problem you need to solve is subtle and you need to understand the distribution of new generation and old generation. For example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span>      <span style="color:#ae81ff">323</span> ms: Scavenge 10.8 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> -&gt; 8.7 <span style="color:#f92672">(</span>43.0<span style="color:#f92672">)</span> MB, <span style="color:#ae81ff">2</span> ms <span style="color:#f92672">[</span>Runtime::PerformGC<span style="color:#f92672">]</span>.
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Memory allocator,   used:  <span style="color:#ae81ff">44048</span> KB, available: <span style="color:#ae81ff">1455088</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> New space,          used:    <span style="color:#ae81ff">917</span> KB, available:   <span style="color:#ae81ff">3178</span> KB, committed:   <span style="color:#ae81ff">8192</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Old pointers,       used:   <span style="color:#ae81ff">3249</span> KB, available:    <span style="color:#ae81ff">278</span> KB, committed:   <span style="color:#ae81ff">3535</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Old data space,     used:   <span style="color:#ae81ff">2795</span> KB, available:    <span style="color:#ae81ff">106</span> KB, committed:   <span style="color:#ae81ff">3215</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Code space,         used:   <span style="color:#ae81ff">1362</span> KB, available:    <span style="color:#ae81ff">115</span> KB, committed:   <span style="color:#ae81ff">1992</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Map space,          used:    <span style="color:#ae81ff">562</span> KB, available:    <span style="color:#ae81ff">573</span> KB, committed:   <span style="color:#ae81ff">1135</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Cell space,         used:     <span style="color:#ae81ff">39</span> KB, available:      <span style="color:#ae81ff">0</span> KB, committed:    <span style="color:#ae81ff">128</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Large object space, used:      <span style="color:#ae81ff">0</span> KB, available: <span style="color:#ae81ff">1454047</span> KB, committed:      <span style="color:#ae81ff">0</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> All spaces,         used:   <span style="color:#ae81ff">8926</span> KB, available:   <span style="color:#ae81ff">4251</span> KB, committed:  <span style="color:#ae81ff">18198</span> KB
-<span style="color:#f92672">[</span>93955<span style="color:#f92672">]</span> Total time spent in GC  : <span style="color:#ae81ff">12</span> ms
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>93955<span class="o">]</span>      <span class="m">323</span> ms: Scavenge 10.8 <span class="o">(</span>43.0<span class="o">)</span> -&gt; 8.7 <span class="o">(</span>43.0<span class="o">)</span> MB, <span class="m">2</span> ms <span class="o">[</span>Runtime::PerformGC<span class="o">]</span>.
+<span class="o">[</span>93955<span class="o">]</span> Memory allocator,   used:  <span class="m">44048</span> KB, available: <span class="m">1455088</span> KB
+<span class="o">[</span>93955<span class="o">]</span> New space,          used:    <span class="m">917</span> KB, available:   <span class="m">3178</span> KB, committed:   <span class="m">8192</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Old pointers,       used:   <span class="m">3249</span> KB, available:    <span class="m">278</span> KB, committed:   <span class="m">3535</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Old data space,     used:   <span class="m">2795</span> KB, available:    <span class="m">106</span> KB, committed:   <span class="m">3215</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Code space,         used:   <span class="m">1362</span> KB, available:    <span class="m">115</span> KB, committed:   <span class="m">1992</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Map space,          used:    <span class="m">562</span> KB, available:    <span class="m">573</span> KB, committed:   <span class="m">1135</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Cell space,         used:     <span class="m">39</span> KB, available:      <span class="m">0</span> KB, committed:    <span class="m">128</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Large object space, used:      <span class="m">0</span> KB, available: <span class="m">1454047</span> KB, committed:      <span class="m">0</span> KB
+<span class="o">[</span>93955<span class="o">]</span> All spaces,         used:   <span class="m">8926</span> KB, available:   <span class="m">4251</span> KB, committed:  <span class="m">18198</span> KB
+<span class="o">[</span>93955<span class="o">]</span> Total <span class="nb">time</span> spent in GC  : <span class="m">12</span> ms
 </code></pre></div><p>Here is a good article about how GC works in Nodejs: <a href="https://strongloop.com/strongblog/node-js-performance-garbage-collection/">https://strongloop.com/strongblog/node-js-performance-garbage-collection/</a></p>
 <p>Another common metric we monitor is the heap size, which can be obtained by calling <code>process.memoryUsage().heapUsed</code>.</p>
 <h3 id="profiling-on-production-1">Profiling on Production</h3>
@@ -246,17 +212,11 @@ debugger listening on port <span style="color:#ae81ff">5858</span>
 
         </div>
 
-        <div class="wrapper-footer">
-            <div class="container">
-                <footer class="footer">
-                    <a href="https://github.com/jiaz"><i class="svg-icon github"></i></a>
-                    <p class="powered-by">Generated by Hugo. Theme adopted from
-                        <a href="https://github.com/poole/lanyon">Lanyon</a> and
-                        <a href="http://www.jekyllnow.com">Jekyll Now</a>.</p>
-                </footer>
+        <footer class="block border-t lg:hidden">
+            <div class="text-center my-6">
+                <a href="https://github.com/jiaz"><i class="fab fa-2x fa-github"></i></a>
             </div>
-        </div>
-
+        </footer>
     </div>
 
 </body>
